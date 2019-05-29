@@ -20,6 +20,32 @@ void PreOrderRecursive(node* root, vector<int>&arr){
     PreOrderRecursive(root -> left, arr);
     PreOrderRecursive(root -> right, arr);
 }
+
+vector<int> PreOrderIterative(node*root){
+    vector<node*> stack;//acts as a stack. when traversing node, add to stack. after visiting right, pop off and go down the line.
+    vector<int> res;
+    if(root == NULL)
+        return res;
+    stack.push_back(root);
+    auto it = root;
+    //stack pops when done with all parts of the node. So root will be the last to go.
+    while(!stack.empty()){
+        it = stack.back();
+            stack.pop_back();//so it won't print the value multiple times.
+        res.push_back(it -> val);
+        if (it -> right != NULL){   //pushback right bc in stack, we do FILO.
+            stack.push_back(it -> right);
+            it -> right = NULL;
+        }
+        if (it -> left != NULL){
+            stack.push_back(it -> left);
+            it -> left = NULL;
+        }
+        
+    }
+    return res;
+
+}
 /*
            1
     2           3
@@ -43,22 +69,41 @@ int main(){//driver
 
     vector<int> arr;
     PreOrderRecursive(one, arr);
-    delete one, two, three, four, five, six, seven;
+    
 
     if(arr != vector<int>{1,2,4,5,3,6,7}){
-        cout << "Error, wrong results. Expecting: 1 2 4 5 3 6 7"<<endl;
+        cout << "Error, wrong results - recursive. Expecting: 1 2 4 5 3 6 7"<<endl;
         cout << "Got: ";
         for(int i=0;i<arr.size();i++){
             cout << arr[i]<< " ";
         }
     }else{
-        cout << "Got correct answer!"<<endl;
+        cout << "Got correct answer - recursive!"<<endl;
         cout << "Got: ";
         for(int i=0;i<arr.size();i++){
             cout << arr[i]<< " ";
         }
+        cout <<endl;
     }
 
+    auto arr2 = PreOrderIterative(one);
+    if(arr2 != vector<int>{1,2,4,5,3,6,7}){
+        cout << "Error, wrong results - iterative. Expecting: 1 2 4 5 3 6 7"<<endl;
+        cout << "Got: ";
+        for(int i=0;i<arr2.size();i++){
+            cout << arr2[i]<< " ";
+        }
+    }else{
+        cout << "Got correct answer - iterative!"<<endl;
+        cout << "Got: ";
+        for(int i=0;i<arr2.size();i++){
+            cout << arr2[i]<< " ";
+        }
+        cout << "\n\n\n";
+    }
+    
+    cout << "\"The true wealth of a nation lies not in it's gold or silver \nbut in it's learning, wisdom and in the uprightness of its sons.\"\n-Kahlil Gibran";
+delete one, two, three, four, five, six, seven;
     string what;
 cin  >>what;
 }
